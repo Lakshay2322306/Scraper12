@@ -1,0 +1,55 @@
+{
+  "app": {
+    "framework": "Flask",
+    "endpoints": [
+      {
+        "path": "/webhook",
+        "method": "POST",
+        "description": "Webhook endpoint to receive updates from Telegram.",
+        "handler": "webhook"
+      }
+    ]
+  },
+  "bot": {
+    "library": "telebot",
+    "token_env_variable": "TELEGRAM_TOKEN",
+    "webhook_url": "https://<YOUR_URL>/webhook",
+    "commands": [
+      {
+        "command": "/scr",
+        "handler": "scrape_ccs",
+        "parameters": [
+          {
+            "name": "username",
+            "required": true
+          },
+          {
+            "name": "limit",
+            "required": true
+          }
+        ],
+        "description": "Scrape data based on provided username and limit.",
+        "error_messages": {
+          "missing_arguments": "Please provide both username and limit. Usage: /scr username limit",
+          "request_error": "Request error: <error details>",
+          "generic_error": "An error occurred: <error details>"
+        }
+      }
+    ]
+  },
+  "dependencies": [
+    "telebot",
+    "os",
+    "time",
+    "requests",
+    "Flask"
+  ],
+  "webhook_setup": {
+    "remove_existing_webhook": true,
+    "set_new_webhook": true
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": "PORT environment variable or 5000"
+  }
+}
